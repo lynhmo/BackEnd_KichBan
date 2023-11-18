@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/botstoreMERN')
+mongoose.connect(`${process.env.MONGO_DB}`)
     .then(() => {
         console.log("Ket not thanh cong")
     }).catch((err) => {
