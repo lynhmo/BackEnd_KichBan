@@ -1,7 +1,4 @@
 const Product = require('../models/ProductModel')
-const bcrypt = require("bcrypt")
-const { genneralAccessToken, genneralRefreshToken } = require("./JwtService")
-const jwt = require('jsonwebtoken');
 
 const createProduct = (newProduct) => {
     return new Promise(async (resolve, reject) => {
@@ -109,14 +106,19 @@ const deleteProduct = (id) => {
         }
     })
 }
-const getAllProduct = () => {
+const getAllProduct = (limit, page) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const allProduct = await Product.find()
+            const totalProduct = await Product.countDocuments()
+            // MongoDB chuyển sang countDocuments() count() không dùng được
+            const allProduct = await Product.find().limit(limit).skip(page * limit)
             resolve({
                 status: "OK",
                 message: "All Products",
-                data: allProduct
+                data: allProduct,
+                total: totalProduct,
+                pageCurent: Number(page) + 1,
+                totalPage: Math.ceil(totalProduct / Number(limit))
             })
         }
         catch (e) {

@@ -28,7 +28,7 @@ const updateProduct = async (req, res) => {
                 message: 'Product ID is required'
             })
         }
-        const response = await ProductService.updateProduct(productId,data)
+        const response = await ProductService.updateProduct(productId, data)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
@@ -72,7 +72,8 @@ const deteleProduct = async (req, res) => {
 }
 const getAllProduct = async (req, res) => {
     try {
-        const response = await ProductService.getAllProduct()
+        const { limit, page } = req.query
+        const response = await ProductService.getAllProduct(limit, page)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
