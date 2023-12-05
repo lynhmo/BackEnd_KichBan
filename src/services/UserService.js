@@ -13,7 +13,7 @@ const createUser = (newUser) => {
             })
             if (checkUser !== null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "The email is already in use",
                 })
             }
@@ -47,15 +47,15 @@ const loginUser = (userLogin) => {
             })
             if (checkUser == null) {
                 resolve({
-                    status: "OK",
-                    message: "Tai khoan khong ton tai",
+                    status: "ERR",
+                    message: "Tài khoản không tồn tại!",
                 })
             }
             const comparePassword = bcrypt.compareSync(password, checkUser.password)
             if (!comparePassword) {
                 resolve({
-                    status: "OK",
-                    message: "password or username is incoreeect"
+                    status: "ERR",
+                    message: "Tài khoản hoặc mật khẩu sai!"
                 })
             }
             const access_token = genneralAccessToken({
@@ -88,8 +88,8 @@ const updateUser = (id, data) => {
             // console.log("checkUser", checkUser);
             if (checkUser == null) {
                 resolve({
-                    status: "OK",
-                    message: "Tai khoan khong ton tai",
+                    status: "ERR",
+                    message: "Tài khoản không tồn tại",
                 })
             }
             const updatedUser = await User.findByIdAndUpdate(id, data, { new: true })
@@ -113,8 +113,8 @@ const deleteUser = (id) => {
             })
             if (checkUser == null) {
                 resolve({
-                    status: "OK",
-                    message: "Tai khoan khong ton tai",
+                    status: "ERR",
+                    message: "Tài khoản không tồn tại",
                 })
             }
             await User.findByIdAndDelete(id)
@@ -151,8 +151,8 @@ const getDetailUser = (id) => {
             })
             if (user_detail == null) {
                 resolve({
-                    status: "OK",
-                    message: "Tai khoan khong ton tai",
+                    status: "ERR",
+                    message: "Tài khoản không tồn tại",
                 })
             }
             resolve({

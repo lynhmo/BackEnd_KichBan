@@ -3,14 +3,14 @@ const JWTService = require('../services/JwtService')
 
 const createUser = async (req, res) => {
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const { name, email, password, confirmPassword, phone } = req.body;
         const regex = /^\S+@\S+\.\S+$/
         const isCheckEmail = regex.test(email)
-        if (!name || !email || !password || !confirmPassword || !phone) {
+        if (!email || !password || !confirmPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required!'
+                message: 'The input is required! reg'
             })
         } else if (!isCheckEmail) {
             return res.status(200).json({
@@ -34,13 +34,13 @@ const createUser = async (req, res) => {
 }
 const loginUser = async (req, res) => {
     try {
-        const { name, email, password, confirmPassword, phone } = req.body;
+        const { email, password } = req.body;
         const regex = /^\S+@\S+\.\S+$/
         const isCheckEmail = regex.test(email)
         if (!email || !password) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required!'
+                message: 'The input is required! login'
             })
         } else if (!isCheckEmail) {
             return res.status(200).json({
@@ -49,7 +49,13 @@ const loginUser = async (req, res) => {
             })
         }
         const response = await UserService.loginUser(req.body)
-        return res.status(200).json(response)
+        const { refresh_token, ...newResponse } = response
+        res.cookie('refresh_token', refresh_token, {
+            HttpOnly: true,
+            Secure: false,
+            SameSite: 'none'
+        })
+        return res.status(200).json(newResponse)
     } catch (e) {
         return res.status(404).json({
             message: e
@@ -66,7 +72,7 @@ const updateUser = async (req, res) => {
                 message: 'User ID is required'
             })
         }
-        const response = await UserService.updateUser(userId,data)
+        const response = await UserService.updateUser(userId, data)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
@@ -122,8 +128,7 @@ const getDetailUser = async (req, res) => {
 }
 const refreshToken = async (req, res) => {
     try {
-        const token = req.headers.token.split(' ')[1]
-        // const token = req.headers
+        const token = req.cookies.refresh_token
         if (!token) {
             return res.status(200).json({
                 status: 'ERR',
