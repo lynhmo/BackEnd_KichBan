@@ -149,6 +149,7 @@ const getDetailUser = (id) => {
             const user_detail = await User.findOne({
                 _id: id
             })
+            // console.log(user_detail);
             if (user_detail == null) {
                 resolve({
                     status: "ERR",

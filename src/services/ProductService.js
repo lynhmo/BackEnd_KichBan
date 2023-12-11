@@ -9,7 +9,7 @@ const createProduct = (newProduct) => {
             })
             if (checkProduct !== null) {
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: "The name of the product already exists"
                 })
             }
@@ -111,6 +111,7 @@ const getAllProduct = (limit, page, sort, filter) => {
         try {
             const totalProduct = await Product.countDocuments()
             // MongoDB chuyển sang countDocuments() count() không dùng được
+            // filter theo gia tri id,name,....
             if (filter) {
                 const label = filter[0];
                 const allProductFilter = await Product.find({
@@ -126,20 +127,23 @@ const getAllProduct = (limit, page, sort, filter) => {
                     totalPage: Math.ceil(totalProduct / Number(limit))
                 })
             }
+            // phan trang
             if (sort) {
+                // khoi tao objsort gia tri cua no khi truyen vao se la (giatri : DESC/ASC) vi du ==> soluong : DESC
                 const objectSort = {}
                 objectSort[sort[1]] = sort[0]
+
                 const allProductSort = await Product.find()
-                    .limit(limit)
-                    .skip(page * limit)
-                    .sort(objectSort)
+                    .limit(limit) // gioi han 1 trang
+                    .skip(page * limit) // bo qua bao nhieu san phan de duoc 1 trang tiep theo
+                    .sort(objectSort) // su dung gia tri objsort de xep san pham theo gia tri DESC/ASC
                 resolve({
                     status: "OK",
                     message: "All Products",
                     data: allProductSort,
                     total: totalProduct,
-                    pageCurent: Number(page) + 1,
-                    totalPage: Math.ceil(totalProduct / Number(limit))
+                    pageCurent: Number(page) + 1, // trang ve trang hien tai
+                    totalPage: Math.ceil(totalProduct / Number(limit)) // tra ve tong so trang
                 })
             }
             const allProduct = await Product.find().limit(limit).skip(page * limit)
