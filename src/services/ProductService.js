@@ -44,7 +44,7 @@ const updateProduct = (id, data) => {
             })
             if (checkProduct == null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "Product not found",
                 })
             }
@@ -68,7 +68,7 @@ const getDetailProduct = (id) => {
             })
             if (product_detail == null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "Product not found",
                 })
             }
@@ -91,7 +91,7 @@ const deleteProduct = (id) => {
             })
             if (checkProduct == null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "Product not found",
                 })
             }
