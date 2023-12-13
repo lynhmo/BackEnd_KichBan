@@ -111,6 +111,25 @@ const deleteUser = async (req, res) => {
         });
     }
 }
+const deteleManyUser = async (req, res) => {
+    try {
+        const userIds = req.body
+        // const token = req.headers
+        if (!userIds) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'User ID is required'
+            })
+        }
+        const response = await UserService.deteleManyUser(userIds)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+}
+
 const getAllUser = async (req, res) => {
     try {
         const response = await UserService.getAllUser()
@@ -164,5 +183,6 @@ module.exports = {
     getAllUser,
     getDetailUser,
     refreshToken,
-    logoutUser
+    logoutUser,
+    deteleManyUser
 }

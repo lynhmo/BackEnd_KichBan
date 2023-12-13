@@ -106,6 +106,21 @@ const deleteProduct = (id) => {
         }
     })
 }
+
+const deleteManyProduct = (ids) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Product.deleteMany({ _id: ids })
+            resolve({
+                status: "OK",
+                message: "DELETE SUCCESS"
+            })
+        }
+        catch (e) {
+            reject(e)
+        }
+    })
+}
 const getAllProduct = (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -114,13 +129,11 @@ const getAllProduct = (limit, page, sort, filter) => {
             // filter theo gia tri id,name,....
             if (filter) {
                 const label = filter[0];
-                const allProductFilter = await Product.find({
-                    [label]: { '$regex': filter[1] }
-                })
-                    .limit(limit).skip(page * limit)
+                // '$options': 'i' fuzzy matching cua MongoDB
+                const allProductFilter = await Product.find({ [label]: { '$regex': filter[1], '$options': 'i' } }).limit(limit).skip(page * limit)
                 resolve({
                     status: "OK",
-                    message: "All Products",
+                    message: "All Products1",
                     data: allProductFilter,
                     total: totalProduct,
                     pageCurent: Number(page) + 1,
@@ -139,7 +152,7 @@ const getAllProduct = (limit, page, sort, filter) => {
                     .sort(objectSort) // su dung gia tri objsort de xep san pham theo gia tri DESC/ASC
                 resolve({
                     status: "OK",
-                    message: "All Products",
+                    message: "All Products2",
                     data: allProductSort,
                     total: totalProduct,
                     pageCurent: Number(page) + 1, // trang ve trang hien tai
@@ -149,7 +162,7 @@ const getAllProduct = (limit, page, sort, filter) => {
             const allProduct = await Product.find().limit(limit).skip(page * limit)
             resolve({
                 status: "OK",
-                message: "All Products",
+                message: "All Products3",
                 data: allProduct,
                 total: totalProduct,
                 pageCurent: Number(page) + 1,
@@ -166,5 +179,6 @@ module.exports = {
     updateProduct,
     getDetailProduct,
     deleteProduct,
-    getAllProduct
+    getAllProduct,
+    deleteManyProduct,
 }
