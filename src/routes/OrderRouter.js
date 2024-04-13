@@ -4,7 +4,8 @@ const { authMiddleWare, authUserMiddleWare } = require("../middleware/authMiddle
 const OrderController = require("../controller/OrderController")
 
 router.post('/create', authUserMiddleWare, OrderController.createOrder)
-
+// router.get('/getall', authMiddleWare, OrderController.getAllOrder)
+router.get('/vnpay:money', OrderController.createPay)
 
 
 module.exports = router

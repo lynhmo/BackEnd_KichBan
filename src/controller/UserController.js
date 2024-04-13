@@ -5,7 +5,7 @@ const createUser = async (req, res) => {
     try {
         // console.log(req.body)
         const { name, email, password, confirmPassword, phone } = req.body;
-        const regex = /^\S+@\S+\.\S+$/
+        const regex = /^\S+@\S+\.\S+$/ //check mail
         const isCheckEmail = regex.test(email)
         if (!email || !password || !confirmPassword) {
             return res.status(200).json({
@@ -23,7 +23,6 @@ const createUser = async (req, res) => {
                 message: 'Mat khau nhap lai sai!'
             })
         }
-        // console.log('isCheckEmail', isCheckEmail)
         const response = await UserService.createUser(req.body)
         return res.status(200).json(response)
     } catch (e) {
@@ -158,6 +157,7 @@ const getDetailUser = async (req, res) => {
         });
     }
 }
+//done
 const refreshToken = async (req, res) => {
     try {
         const token = req.cookies.refresh_token

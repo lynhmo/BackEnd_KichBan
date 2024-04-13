@@ -58,6 +58,7 @@ const loginUser = (userLogin) => {
                     message: "Tài khoản hoặc mật khẩu sai!"
                 })
             }
+            //khoi tao token
             const access_token = genneralAccessToken({
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin
