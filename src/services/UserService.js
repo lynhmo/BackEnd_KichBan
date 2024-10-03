@@ -86,7 +86,6 @@ const updateUser = (id, data) => {
             const checkUser = await User.findOne({
                 _id: id
             })
-            // console.log("checkUser", checkUser);
             if (checkUser == null) {
                 resolve({
                     status: "ERR",
@@ -94,7 +93,6 @@ const updateUser = (id, data) => {
                 })
             }
             const updatedUser = await User.findByIdAndUpdate(id, data, { new: true })
-            // console.log(updatedUser);
             resolve({
                 status: "OK",
                 message: "SUCCESS",
@@ -165,7 +163,6 @@ const getDetailUser = (id) => {
             const user_detail = await User.findOne({
                 _id: id
             })
-            // console.log(user_detail);
             if (user_detail == null) {
                 resolve({
                     status: "ERR",

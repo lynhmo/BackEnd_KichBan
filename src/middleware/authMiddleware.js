@@ -26,7 +26,6 @@ const authUserMiddleWare = (req, res, next) => {
     const userId = req.params.id
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
         if (err) {
-            // console.log(user);
             return res.status(404).json({
                 message: "The authenticated 1 auth",
                 status: "ERROR"

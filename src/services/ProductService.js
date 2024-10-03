@@ -13,6 +13,15 @@ const createProduct = (newProduct) => {
                     message: "The name of the product already exists"
                 })
             }
+            // Check quantity
+            if (countInStock <= 0) {
+                resolve({
+                    status: 'ERR',
+                    message: "The quantity must be greater than 0"
+                })
+            }
+
+
             const createProduct = await Product.create({
                 name,
                 image,
@@ -48,12 +57,22 @@ const updateProduct = (id, data) => {
                     message: "Product not found",
                 })
             }
+
             const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true })
-            resolve({
-                status: "OK",
-                message: "SUCCESS",
-                updatedProduct
-            })
+            // Check quantity
+            if (data.countInStock <= 0) {
+                resolve({
+                    status: 'ERR',
+                    message: "The quantity must be greater than 0"
+                })
+            } else {
+                resolve({
+                    status: "OK",
+                    message: "SUCCESS",
+                    updatedProduct
+                })
+            }
+
         }
         catch (e) {
             reject(e)

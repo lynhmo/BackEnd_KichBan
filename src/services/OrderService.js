@@ -9,7 +9,6 @@ const createPay = (money) => {
                 message: `OKE`
             })
         } catch (e) {
-            //   console.log('e', e)
             reject(e)
         }
     })
@@ -98,7 +97,6 @@ const createOrder = (newOrder) => {
 
 
         } catch (e) {
-            //   console.log('e', e)
             reject(e)
         }
     })

@@ -3,7 +3,6 @@ const JWTService = require('../services/JwtService')
 
 const createUser = async (req, res) => {
     try {
-        // console.log(req.body)
         const { name, email, password, confirmPassword, phone } = req.body;
         const regex = /^\S+@\S+\.\S+$/ //check mail
         const isCheckEmail = regex.test(email)
@@ -32,7 +31,7 @@ const createUser = async (req, res) => {
     }
 }
 const loginUser = async (req, res) => {
-    try {
+    try {        
         const { email, password } = req.body;
         const regex = /^\S+@\S+\.\S+$/
         const isCheckEmail = regex.test(email)

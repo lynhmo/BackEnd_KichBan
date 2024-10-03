@@ -2,7 +2,6 @@ const OrderService = require('../services/OrderService')
 const JWTService = require('../services/JwtService')
 const createPay = async (req, res) => {
     try {
-        console.log("request.params.money:" + request.params.money);
         const response = await OrderService.createPay(request.params.money)
         return res.status(200).json(response)
     } catch (e) {
